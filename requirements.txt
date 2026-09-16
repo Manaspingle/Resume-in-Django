@@ -1,0 +1,2 @@
+Django>=6.1,<6.2
+whitenoise>=6.9,<7
