@@ -4,7 +4,10 @@ from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", "django-insecure-resume-demo-key")
 DEBUG = os.getenv("DJANGO_DEBUG", "True").lower() == "true"
-ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS", "127.0.0.1,localhost,testserver,.vercel.app").split(",")
+configured_hosts = os.getenv("DJANGO_ALLOWED_HOSTS", "127.0.0.1,localhost,testserver").split(",")
+vercel_host = os.getenv("VERCEL_URL", "").strip()
+ALLOWED_HOSTS = [host.strip() for host in configured_hosts if host.strip()]
+ALLOWED_HOSTS.extend([".vercel.app", vercel_host] if vercel_host else [".vercel.app"])
 INSTALLED_APPS = ["django.contrib.staticfiles", "resume"]
 MIDDLEWARE = ["django.middleware.security.SecurityMiddleware", "whitenoise.middleware.WhiteNoiseMiddleware", "django.middleware.common.CommonMiddleware"]
 ROOT_URLCONF = "resume_site.urls"
